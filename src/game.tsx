@@ -86,9 +86,11 @@ const calculateHandScore = (hand: Hand): number => {
 };
 
 const determineGameResult = (state: GameState): GameResult => {
-  let dealerScore = calculateHandScore(state.dealerHand);
+  const dealerScore = calculateHandScore(state.dealerHand);
   const playerScore = calculateHandScore(state.playerHand);
 
+  if (playerScore > 21) return "dealer_win";
+  if (dealerScore > 21) return "player_win";
   if (playerScore > dealerScore) return "player_win";
   if (playerScore < dealerScore) return "dealer_win";
 
