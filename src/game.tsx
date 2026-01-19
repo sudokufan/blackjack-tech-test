@@ -86,14 +86,8 @@ const calculateHandScore = (hand: Hand): number => {
 };
 
 const determineGameResult = (state: GameState): GameResult => {
-  let currentState = state;
-  let dealerScore = calculateHandScore(currentState.dealerHand);
-  const playerScore = calculateHandScore(currentState.playerHand);
-
-  while (dealerScore <= 16) {
-    currentState = dealerHits(currentState);
-    dealerScore = calculateHandScore(currentState.dealerHand);
-  }
+  let dealerScore = calculateHandScore(state.dealerHand);
+  const playerScore = calculateHandScore(state.playerHand);
 
   if (playerScore > dealerScore) return "player_win";
   if (playerScore < dealerScore) return "dealer_win";
@@ -103,10 +97,16 @@ const determineGameResult = (state: GameState): GameResult => {
 
 //Player Actions
 const playerStands = (state: GameState): GameState => {
-  return {
+  let currentState: GameState = {
     ...state,
     turn: "dealer_turn",
   };
+
+  while (calculateHandScore(currentState.dealerHand) <= 16) {
+    currentState = dealerHits(currentState);
+  }
+
+  return currentState;
 };
 
 const playerHits = (state: GameState): GameState => {
