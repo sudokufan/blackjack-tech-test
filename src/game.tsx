@@ -52,7 +52,7 @@ const setupGame = (): GameState => {
   return {
     playerHand: cardDeck.slice(cardDeck.length - 2, cardDeck.length),
     dealerHand: cardDeck.slice(cardDeck.length - 4, cardDeck.length - 2),
-    cardDeck: cardDeck.slice(0, cardDeck.length - 4), // remaining cards after player and dealer have been give theirs
+    cardDeck: cardDeck.slice(0, cardDeck.length - 4), // remaining cards after player and dealer have been given theirs
     turn: "player_turn",
   };
 };
@@ -86,6 +86,16 @@ const calculateHandScore = (hand: Hand): number => {
 };
 
 const determineGameResult = (state: GameState): GameResult => {
+  let playerScore = calculateHandScore(state.playerHand);
+  let dealerScore = calculateHandScore(state.dealerHand);
+
+  while (dealerScore <= 16) {
+    dealerHits(state);
+  }
+
+  if (playerScore > dealerScore) return "player_win";
+  if (playerScore < dealerScore) return "dealer_win";
+
   return "no_result";
 };
 
@@ -103,6 +113,15 @@ const playerHits = (state: GameState): GameState => {
     ...state,
     cardDeck: remaining,
     playerHand: [...state.playerHand, card],
+  };
+};
+
+const dealerHits = (state: GameState): GameState => {
+  const { card, remaining } = takeCard(state.cardDeck);
+  return {
+    ...state,
+    cardDeck: remaining,
+    dealerHand: [...state.dealerHand, card],
   };
 };
 
