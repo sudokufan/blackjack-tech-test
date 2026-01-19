@@ -93,6 +93,7 @@ const determineGameResult = (state: GameState): GameResult => {
   if (dealerScore > 21) return "player_win";
   if (playerScore > dealerScore) return "player_win";
   if (playerScore < dealerScore) return "dealer_win";
+  if (playerScore === dealerScore) return "draw";
 
   return "no_result";
 };
