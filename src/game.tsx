@@ -75,12 +75,12 @@ const calculateHandScore = (hand: Hand): number => {
     } else {
       score += parseInt(card.rank);
     }
-
-    if (score > 21 && aces > 0) {
-      score -= 10;
-      aces -= 1;
-    }
   });
+
+  while (score > 21 && aces > 0) {
+    score -= 10;
+    aces -= 1;
+  }
 
   return score;
 };
