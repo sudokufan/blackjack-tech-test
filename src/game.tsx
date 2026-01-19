@@ -33,7 +33,7 @@ const newCardDeck = (): CardDeck =>
       Object.values(CardRank).map((rank) => ({
         suit,
         rank,
-      }))
+      })),
     )
     .reduce((a, v) => [...a, ...v]);
 
@@ -59,7 +59,30 @@ const setupGame = (): GameState => {
 
 //Scoring
 const calculateHandScore = (hand: Hand): number => {
-  return 0;
+  let score = 0;
+  let aces = 0;
+
+  hand.forEach((card) => {
+    if (card.rank === CardRank.Ace) {
+      aces += 1;
+      score += 11;
+    } else if (
+      card.rank === CardRank.Jack ||
+      card.rank === CardRank.Queen ||
+      card.rank === CardRank.King
+    ) {
+      score += 10;
+    } else {
+      score += parseInt(card.rank);
+    }
+
+    if (score > 21 && aces > 0) {
+      score -= 10;
+      aces -= 1;
+    }
+  });
+
+  return score;
 };
 
 const determineGameResult = (state: GameState): GameResult => {
