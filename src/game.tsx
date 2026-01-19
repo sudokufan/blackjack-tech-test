@@ -11,7 +11,10 @@ import {
 
 //UI Elements
 const CardBackImage = () => (
-  <img src={process.env.PUBLIC_URL + `/SVG-cards/png/1x/back.png`} />
+  <img
+    src={process.env.PUBLIC_URL + `/SVG-cards/png/1x/back.png`}
+    alt="card back"
+  />
 );
 
 const CardImage = ({ suit, rank }: Card) => {
@@ -22,6 +25,7 @@ const CardImage = ({ suit, rank }: Card) => {
         process.env.PUBLIC_URL +
         `/SVG-cards/png/1x/${suit.slice(0, -1)}_${card}.png`
       }
+      alt="playing card"
     />
   );
 };
@@ -176,7 +180,7 @@ const Game = (): JSX.Element => {
         </div>
       )}
       {state.turn === "dealer_turn" &&
-      determineGameResult(state) != "no_result" ? (
+      determineGameResult(state) !== "no_result" ? (
         <p>{determineGameResult(state)}</p>
       ) : (
         <p>{state.turn}</p>
